@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="500.0" prefWidth="800.0"
+            fx:controller="org.user.appimagemanager.window.ControllerMainW"
+            minHeight="150" minWidth="150"> <!-- min width and height should be overridden here -->
+
+    <center>
+        <GridPane alignment="TOP_CENTER" hgap="5" vgap="5">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15" />
+            </padding>
+            <Label text="Filename:" GridPane.rowIndex="0" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Real filename" GridPane.hgrow="ALWAYS" fx:id="filename" />
+            <Label text="Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Visible filename" fx:id="name" />
+            <Label text="Exec:" GridPane.rowIndex="2" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="path to the file to launch or a command to execute (e.g. /path/to/app)" fx:id="exec" />
+            <HBox GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox /><Label text="Hidden" /></HBox>
+
+            <TitledPane text="Optional" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2" >
+                <GridPane alignment="TOP_CENTER" hgap="5" vgap="5">
+                    <Label text="Comment:" GridPane.rowIndex="0" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Short description" GridPane.hgrow="ALWAYS" fx:id="comment" />
+                    <Label text="Icon:" GridPane.rowIndex="1" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Application's name if supported by system theme or path to the icon" fx:id="icon" />
+                    <Label text="Categories:" GridPane.rowIndex="2" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Program's categories (e.g. Game;Education;)" fx:id="categories" />
+
+                    <Label text="Type:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                    <ChoiceBox GridPane.rowIndex="3" GridPane.columnIndex="1" value="Application">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Application" />
+                                <String fx:value="Link" />
+                                <String fx:value="Directory" />
+                            </FXCollections>
+                        </items>
+                    </ChoiceBox>
+
+                    <HBox GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox /><Label text="Spawn in Terminal" /></HBox>
+                </GridPane>
+            </TitledPane>
+        </GridPane>
+    </center>
+
+    <left>
+        <ListView fx:id="listView" />
+    </left>
+
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT" spacing="5" style="-fx-background-color:#dedede; -fx-border-width:1 0 0 0; -fx-border-color: black">
+            <padding>
+                <Insets top="5" right="15" bottom="5" left="15" />
+            </padding>
+            <Button text="Load a desktop file" onAction="#onSelect" />
+            <Button text="Create from an executable" onAction="#onSelect" />
+            <Button text="Remove" onAction="#onSelect" />
+            <Button text="Save" onAction="#onSelect" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

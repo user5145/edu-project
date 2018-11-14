@@ -20,14 +20,14 @@ public class MainWindow {
     public ObservableList<String> filenames = FXCollections.observableArrayList();
 
     MainWindow(){
-        refreshFilesList();
+        refreshFileList();
     }
 
 
     /**
      * refresh list of files in .local/share/applications
      */
-    public void refreshFilesList(){
+    public void refreshFileList(){
         l.info("Searching for Desktop files");
 
         files.addAll(FileUtils.listFiles(

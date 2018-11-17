@@ -43,7 +43,7 @@ public class ControllerMainW {
         }
     };
 
-    // for whatever reason fxml doesn't initialize it
+    // for whatever reason fxml doesn't initialize ListView
     @FXML
     private ListView<String> listView = new ListView<String>();
     @FXML

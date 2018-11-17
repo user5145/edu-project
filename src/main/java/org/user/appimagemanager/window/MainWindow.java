@@ -16,14 +16,19 @@ public class MainWindow {
     Logger l = LoggerFactory.getLogger(MainWindow.class);
 
 
+
+    //region properties & constructors
     public List<File> files = new ArrayList<>();
     public ObservableList<String> filenames = FXCollections.observableArrayList();
 
     MainWindow(){
         refreshFileList();
     }
+    //endregion
 
 
+
+    //region functions
     /**
      * refresh list of files in .local/share/applications
      */
@@ -80,5 +85,5 @@ public class MainWindow {
 
         return null;
     }
-
+    //endregion
 }

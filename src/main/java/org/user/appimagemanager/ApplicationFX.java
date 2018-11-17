@@ -12,7 +12,11 @@ import java.io.IOException;
 public class ApplicationFX extends Application {
     private static final Logger l = LoggerFactory.getLogger(ApplicationFX.class);
 
+
+
     private ControllerMainW contmw = new ControllerMainW();
+
+
 
     /**
      * init program's gui
@@ -28,6 +32,7 @@ public class ApplicationFX extends Application {
         contmw.show();
     }
 
+
     /**
      * main function
      * @param args
@@ -35,5 +40,4 @@ public class ApplicationFX extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

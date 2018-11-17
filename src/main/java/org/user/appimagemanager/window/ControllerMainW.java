@@ -23,25 +23,14 @@ import java.io.IOException;
  * main controller of this application controls the main window
  */
 public class ControllerMainW {
+    private static final Logger l = LoggerFactory.getLogger(ControllerMainW.class);
+
 
 
     //region Properties
-    private static final Logger l = LoggerFactory.getLogger(ControllerMainW.class);
-
     private MainWindow model = new MainWindow();
     private Stage stage;
     private BorderPane root;
-
-    private TemplateChangeListenerContAccess onListViewValueChange = new TemplateChangeListenerContAccess(this) {
-        @Override
-        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-            l.info("new field selected: " + newValue);
-
-            ControllerMainW contMW = (ControllerMainW) cont;
-            String uri = contMW.model.getSpecificFile(String.valueOf(newValue)).getAbsolutePath();
-            contMW.model.setUpFields(contMW, new Desktop(uri));
-        }
-    };
 
     // for whatever reason fxml doesn't initialize ListView
     @FXML
@@ -58,7 +47,23 @@ public class ControllerMainW {
     public TextField icon;
     @FXML
     public TextField categories;
+
+
+    /**
+     * function that should run when listview selects new file to load
+     */
+    private TemplateChangeListenerContAccess onListViewValueChange = new TemplateChangeListenerContAccess(this) {
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            l.info("new field selected: " + newValue);
+
+            ControllerMainW contMW = (ControllerMainW) cont;
+            String uri = contMW.model.getSpecificFile(String.valueOf(newValue)).getAbsolutePath();
+            contMW.model.setUpFields(contMW, new Desktop(uri));
+        }
+    };
     //endregion
+
 
 
     //region constructors
@@ -87,6 +92,7 @@ public class ControllerMainW {
     //endregion
 
 
+
     //region actions
     public void onSelect(Event e) {
         l.info("button clicked");
@@ -106,6 +112,7 @@ public class ControllerMainW {
         l.info("File dragged over");
     }
     //endregion
+
 
 
     //region functions
@@ -147,5 +154,4 @@ public class ControllerMainW {
         this.stage = stage;
     }
     //endregion
-
 }

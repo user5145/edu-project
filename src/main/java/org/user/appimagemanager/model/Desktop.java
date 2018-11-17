@@ -17,28 +17,7 @@ import java.util.List;
 public class Desktop extends File {
     Logger l = LoggerFactory.getLogger(Desktop.class);
 
-    private enum Type {
-        APPLICATION{
-            @Override
-            public String toString() {
-                return "Application";
-            }
-        },
-        LINK{
-            @Override
-            public String toString() {
-                return "Link";
-            }
-        },
-        DIRECTORY{
-            @Override
-            public String toString() {
-                return "Directory";
-            }
-        };
 
-        Type() {}
-    }
 
     /**
      * Create a file with additional properties to store the most common data
@@ -75,13 +54,15 @@ public class Desktop extends File {
                 terminal = (temp.substring(temp.indexOf("Terminal=")+9).toLowerCase().equals("true"));
             }
             else if (temp.startsWith("Type=")){
-                type = Type.valueOf(temp.substring(temp.indexOf("Type=")+5).trim().toUpperCase());
+                type = DesktopType.valueOf(temp.substring(temp.indexOf("Type=")+5).trim().toUpperCase());
             }
             else if (temp.startsWith("Categories=")){
                 categories = temp.substring(temp.indexOf("Categories=")+11);
             }
         }
     }
+
+
 
     //region properties
     /**
@@ -93,10 +74,12 @@ public class Desktop extends File {
     private String icon;
     private String categories;
     private List lines;
-    private Type type;
+    private DesktopType type;
     private Boolean hidden;
     private Boolean terminal;
     //endregion
+
+
 
     //region getter and setters
     public String getVisibleName() {
@@ -147,11 +130,11 @@ public class Desktop extends File {
         this.lines = lines;
     }
 
-    public Type getType() {
+    public DesktopType getDesktopType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setDesktopType(DesktopType type) {
         this.type = type;
     }
 

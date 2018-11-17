@@ -1,5 +1,7 @@
 package org.user.appimagemanager.window;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.commons.io.FileUtils;
@@ -18,12 +20,19 @@ public class MainWindow {
 
 
     //region properties & constructors
-    public List<File> files = new ArrayList<>();
-    public ObservableList<String> filenames = FXCollections.observableArrayList();
-
     MainWindow(){
         refreshFileList();
     }
+
+
+    public List<File> files = new ArrayList<>();
+    public ObservableList<String> filenames = FXCollections.observableArrayList();
+    public StringProperty filename = new SimpleStringProperty();
+    public StringProperty name = new SimpleStringProperty();
+    public StringProperty exec = new SimpleStringProperty();
+    public StringProperty comment = new SimpleStringProperty();
+    public StringProperty icon = new SimpleStringProperty();
+    public StringProperty categories = new SimpleStringProperty();
     //endregion
 
 
@@ -50,18 +59,17 @@ public class MainWindow {
 
     /**
      * fulfill main window's fields with data from provided file
-     * @param cont
      * @param file
      */
-    public void setUpFields(ControllerMainW cont, Desktop file){
+    public void setUpFields(Desktop file){
         l.debug("set up fields for a controller");
 
-        cont.filename.setText(file.getName());
-        cont.name.setText(file.getVisibleName());
-        cont.exec.setText(file.getExec());
-        cont.comment.setText(file.getComment());
-        cont.icon.setText(file.getIcon());
-        cont.categories.setText(file.getCategories());
+        filename.setValue(file.getName());
+        name.setValue(file.getVisibleName());
+        exec.setValue(file.getExec());
+        comment.setValue(file.getComment());
+        icon.setValue(file.getIcon());
+        categories.setValue(file.getCategories());
     }
 
     /**

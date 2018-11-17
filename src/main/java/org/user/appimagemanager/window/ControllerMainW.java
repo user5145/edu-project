@@ -12,7 +12,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.user.appimagemanager.ApplicationFX;
 import org.user.appimagemanager.Data;
 import org.user.appimagemanager.model.TemplateChangeListenerContAccess;
 import org.user.appimagemanager.model.Desktop;
@@ -36,17 +35,17 @@ public class ControllerMainW {
     @FXML
     private ListView<String> listView = new ListView<String>();
     @FXML
-    public TextField filename;
+    private TextField filename;
     @FXML
-    public TextField name;
+    private TextField name;
     @FXML
-    public TextField exec;
+    private TextField exec;
     @FXML
-    public TextField comment;
+    private TextField comment;
     @FXML
-    public TextField icon;
+    private TextField icon;
     @FXML
-    public TextField categories;
+    private TextField categories;
 
 
     /**
@@ -59,7 +58,7 @@ public class ControllerMainW {
 
             ControllerMainW contMW = (ControllerMainW) cont;
             String uri = contMW.model.getSpecificFile(String.valueOf(newValue)).getAbsolutePath();
-            contMW.model.setUpFields(contMW, new Desktop(uri));
+            contMW.model.setUpFields(new Desktop(uri));
         }
     };
     //endregion
@@ -74,7 +73,7 @@ public class ControllerMainW {
     public ControllerMainW() {
     }
 
-    ;
+
 
     /**
      * It seems to be safer to use javafx initialize function rather than the constructor for javafx related stuff
@@ -88,6 +87,15 @@ public class ControllerMainW {
 
         //onValueChange.setModel(model);
         listView.getSelectionModel().selectedItemProperty().addListener(onListViewValueChange);
+
+
+        //bind view fields' values to model's properties to have true mvc
+        model.filename.bindBidirectional(filename.textProperty());
+        model.name.bindBidirectional(name.textProperty());
+        model.exec.bindBidirectional(exec.textProperty());
+        model.comment.bindBidirectional(comment.textProperty());
+        model.icon.bindBidirectional(icon.textProperty());
+        model.categories.bindBidirectional(categories.textProperty());
     }
     //endregion
 
@@ -105,7 +113,7 @@ public class ControllerMainW {
             return;
         }
 
-        model.setUpFields(this, new Desktop(uri));
+        model.setUpFields(new Desktop(uri));
     }
 
     public void onDrag(Event e) {

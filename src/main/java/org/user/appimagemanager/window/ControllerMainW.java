@@ -116,6 +116,12 @@ public class ControllerMainW {
         model.setUpFields(new Desktop(uri));
     }
 
+    public void onSave(Event e) {
+        l.info("Save button clicked");
+
+        model.Save();
+    }
+
     public void onDrag(Event e) {
         l.info("File dragged over");
     }

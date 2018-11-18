@@ -7,9 +7,11 @@ import javafx.collections.ObservableList;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.user.appimagemanager.Data;
 import org.user.appimagemanager.model.Desktop;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -45,7 +47,7 @@ public class MainWindow {
         l.info("Searching for Desktop files");
 
         files.addAll(FileUtils.listFiles(
-                new File("/home/" + System.getenv("USER") + "/.local/share/applications/"),
+                new File(Data.applicationPath),
                 new String[] {"desktop", "Desktop"},
                 true));
 
@@ -92,6 +94,45 @@ public class MainWindow {
         }
 
         return null;
+    }
+
+
+    public void Save() {
+        if(filename.getValueSafe().isBlank()){
+
+            l.warn("tried to save a file without name, interrupted");
+            return;
+        }
+
+
+        Desktop d = new Desktop(Data.applicationPath + "/" + addDesktopExt(filename.getValue()));
+        if(d.exists())
+            editFile(d);
+        else
+            createFile(d);
+    }
+
+    /**
+     * check if the String end with .desktop and if not add the suffix
+     * @param s
+     */
+    private String addDesktopExt(String s) {
+        if(!s.toLowerCase().endsWith(".desktop"))
+            s+=".desktop";
+
+        return s;
+    }
+
+    private void createFile(Desktop d) {
+
+    }
+
+    private void editFile(Desktop d) {
+        try {
+            d.refreshLines();
+        } catch (IOException e) { e.printStackTrace(); }
+
+
     }
     //endregion
 }

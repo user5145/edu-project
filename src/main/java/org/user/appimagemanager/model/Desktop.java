@@ -26,40 +26,74 @@ public class Desktop extends File {
      */
     public Desktop(String uri) {
         super(uri);
-        l.info(this.getPath());
 
         try {
             lines = FileUtils.readLines(this);
         } catch (IOException e) { e.printStackTrace(); return;}
 
-        Iterator it = lines.iterator();
-        while(it.hasNext()){
-            var temp = (String)it.next();
-            l.debug("load " + this.getName() + ", interprets a line:" + temp);
-
-            //search for every field and save it
-            if (temp.startsWith("Name=")){
-                visibleName = temp.substring(temp.indexOf("Name=")+5);
-            }
-            else if (temp.startsWith("Comment=")){
-                comment = temp.substring(temp.indexOf("Comment=")+8);
-            }
-            else if (temp.startsWith("Exec=")){
-                exec = temp.substring(temp.indexOf("Exec=")+5);
-            }
-            else if (temp.startsWith("Icon=")){
-                icon = temp.substring(temp.indexOf("Icon=")+5);
-            }
-            else if (temp.startsWith("Terminal=")){
-                terminal = (temp.substring(temp.indexOf("Terminal=")+9).toLowerCase().equals("true"));
-            }
-            else if (temp.startsWith("Type=")){
-                type = DesktopType.valueOf(temp.substring(temp.indexOf("Type=")+5).trim().toUpperCase());
-            }
-            else if (temp.startsWith("Categories=")){
-                categories = temp.substring(temp.indexOf("Categories=")+11);
-            }
+        //searches for appropriate lines and saves their indexes (AKA a bunch of ifs)
+        for(int i=0; i < lines.size(); i++){
+            String line = (String) lines.get(i);
+            if (line.trim().startsWith("Name="))
+                visilbeNameIndex= i;
+            else if (line.trim().startsWith("Comment="))
+                commentIndex= i;
+            else if (line.trim().startsWith("Exec="))
+                execIndex= i;
+            else if (line.trim().startsWith("Icon="))
+                iconIndex= i;
+            else if (line.trim().startsWith("Terminal="))
+                terminalIndex= i;
+            else if (line.trim().startsWith("Type="))
+                typeIndex= i;
+            else if (line.trim().startsWith("Categories="))
+                categoriesIndex= i;
         }
+
+
+        //search for every field and save it
+        // index 5 because name= has 5 symbols, "comment=" has 8, etc
+        if(visilbeNameIndex != -1)
+            visibleName = ( (String)lines.get(visilbeNameIndex) ).trim().substring(5);
+
+        if(visilbeNameIndex != -1)
+            comment = ( (String)lines.get(visilbeNameIndex) ).trim().substring(8);
+
+        if(visilbeNameIndex != -1)
+            exec = ( (String)lines.get(visilbeNameIndex) ).trim().substring(5);
+
+        if(visilbeNameIndex != -1)
+            icon = ( (String)lines.get(visilbeNameIndex) ).trim().substring(5);
+
+        if(visilbeNameIndex != -1)
+            terminal = ( (String)lines.get(visilbeNameIndex) ).trim().substring(9).toLowerCase().equals("true");
+
+        //if(typeIndex != -1)
+            //type = DesktopType.valueOf(( (String)lines.get(visilbeNameIndex) ).trim().substring(5).trim().toUpperCase());
+
+        if(visilbeNameIndex != -1)
+            categories = ( (String)lines.get(visilbeNameIndex) ).trim().substring(11);
+    }
+
+    /**
+     * put properties data into lines property,
+     * so lines should reflect file's final content
+     */
+    public void refreshLines() throws IOException {
+
+        lines.set(visilbeNameIndex, visibleName);
+        lines.set(commentIndex, comment);
+        lines.set(execIndex, exec);
+        lines.set(iconIndex, icon);
+        lines.set(terminalIndex, terminal);
+        lines.set(typeIndex, type);
+        lines.set(categoriesIndex, categories);
+    }
+
+    public void save() throws IOException {
+        l.info("save: " + this.getName());
+
+        FileUtils.writeLines(this, getLines());
     }
 
 
@@ -77,6 +111,15 @@ public class Desktop extends File {
     private DesktopType type;
     private Boolean hidden;
     private Boolean terminal;
+
+    //-1 means doesn't exist
+    int visilbeNameIndex = -1;
+    int commentIndex = -1;
+    int execIndex = -1;
+    int iconIndex = -1;
+    int terminalIndex = -1;
+    int typeIndex = -1;
+    int categoriesIndex = -1;
     //endregion
 
 
@@ -88,6 +131,7 @@ public class Desktop extends File {
 
     public void setVisibleName(String name) {
         this.visibleName = name;
+        lines.set(visilbeNameIndex, visibleName);
     }
 
     public String getComment() {
@@ -96,6 +140,7 @@ public class Desktop extends File {
 
     public void setComment(String comment) {
         this.comment = comment;
+        lines.set(commentIndex, comment);
     }
 
     public String getExec() {
@@ -104,6 +149,7 @@ public class Desktop extends File {
 
     public void setExec(String exec) {
         this.exec = exec;
+        lines.set(execIndex, exec);
     }
 
     public String getIcon() {
@@ -112,6 +158,7 @@ public class Desktop extends File {
 
     public void setIcon(String icon) {
         this.icon = icon;
+        lines.set(iconIndex, icon);
     }
 
     public String getCategories() {
@@ -120,6 +167,7 @@ public class Desktop extends File {
 
     public void setCategories(String categories) {
         this.categories = categories;
+        lines.set(categoriesIndex, categories);
     }
 
     public List getLines() {
@@ -136,6 +184,7 @@ public class Desktop extends File {
 
     public void setDesktopType(DesktopType type) {
         this.type = type;
+        lines.set(typeIndex, type);
     }
 
     public Boolean getHidden() {
@@ -152,6 +201,7 @@ public class Desktop extends File {
 
     public void setTerminal(Boolean terminal) {
         this.terminal = terminal;
+        lines.set(terminalIndex, terminal);
     }
     //endregion
 }

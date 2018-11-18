@@ -57,7 +57,7 @@
             <Button text="Load a desktop file" onAction="#onSelect" />
             <Button text="Create from an executable" onAction="#onSelect" />
             <Button text="Remove" onAction="#onSelect" />
-            <Button text="Save" onAction="#onSelect" />
+            <Button text="Save" onAction="#onSave" />
         </HBox>
     </bottom>
 

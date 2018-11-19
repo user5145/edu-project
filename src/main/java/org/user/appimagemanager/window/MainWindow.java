@@ -5,6 +5,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.user.appimagemanager.Data;
@@ -79,7 +80,7 @@ public class MainWindow {
      * @param name filename to identify by
      * @return null if doesn't exist
      */
-    public File getSpecificFile(String name){
+    public File getSpecificFile(@NotNull String name){
         l.debug("searching for: " + name);
 
         File file;
@@ -98,18 +99,22 @@ public class MainWindow {
 
 
     public void Save() {
+        l.debug("exec models save function");
         if(filename.getValueSafe().isBlank()){
-
             l.warn("tried to save a file without name, interrupted");
             return;
         }
 
-
         Desktop d = new Desktop(Data.applicationPath + "/" + addDesktopExt(filename.getValue()));
-        if(d.exists())
-            editFile(d);
-        else
-            createFile(d);
+        d.setVisibleName(name.getValueSafe());
+        d.setComment(comment.getValueSafe());
+        d.setExec(exec.getValueSafe());
+        d.setIcon(icon.getValueSafe());
+        d.setCategories(categories.getValueSafe());
+
+        try {
+            d.save();
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     /**
@@ -121,18 +126,6 @@ public class MainWindow {
             s+=".desktop";
 
         return s;
-    }
-
-    private void createFile(Desktop d) {
-
-    }
-
-    private void editFile(Desktop d) {
-        try {
-            d.refreshLines();
-        } catch (IOException e) { e.printStackTrace(); }
-
-
     }
     //endregion
 }

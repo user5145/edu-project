@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -24,7 +24,7 @@ public class Desktop extends File {
      * Tries to load data from the file if that file exists
      * @param uri path to the file
      */
-    public Desktop(String uri) {
+    public Desktop(@NotNull String uri) {
         super(uri);
 
         try {
@@ -35,7 +35,7 @@ public class Desktop extends File {
         for(int i=0; i < lines.size(); i++){
             String line = (String) lines.get(i);
             if (line.trim().startsWith("Name="))
-                visilbeNameIndex= i;
+                visibleNameIndex= i;
             else if (line.trim().startsWith("Comment="))
                 commentIndex= i;
             else if (line.trim().startsWith("Exec="))
@@ -51,49 +51,62 @@ public class Desktop extends File {
         }
 
 
-        //search for every field and save it
+        // search for every field and save it
         // index 5 because name= has 5 symbols, "comment=" has 8, etc
-        if(visilbeNameIndex != -1)
-            visibleName = ( (String)lines.get(visilbeNameIndex) ).trim().substring(5);
+        if(visibleNameIndex != -1)
+            this.setVisibleName(( (String)lines.get(visibleNameIndex) ).trim().substring(5));
 
-        if(visilbeNameIndex != -1)
-            comment = ( (String)lines.get(visilbeNameIndex) ).trim().substring(8);
+        if(commentIndex != -1)
+            this.setComment(( (String)lines.get(commentIndex) ).trim().substring(8));
 
-        if(visilbeNameIndex != -1)
-            exec = ( (String)lines.get(visilbeNameIndex) ).trim().substring(5);
+        if(execIndex != -1)
+            this.setExec(( (String)lines.get(execIndex) ).trim().substring(5));
 
-        if(visilbeNameIndex != -1)
-            icon = ( (String)lines.get(visilbeNameIndex) ).trim().substring(5);
+        if(iconIndex != -1)
+            this.setIcon(( (String)lines.get(iconIndex) ).trim().substring(5));
 
-        if(visilbeNameIndex != -1)
-            terminal = ( (String)lines.get(visilbeNameIndex) ).trim().substring(9).toLowerCase().equals("true");
+        if(terminalIndex != -1)
+            this.setTerminal(( (String)lines.get(terminalIndex) ).trim().substring(9).toLowerCase().equals("true"));
 
         //if(typeIndex != -1)
             //type = DesktopType.valueOf(( (String)lines.get(visilbeNameIndex) ).trim().substring(5).trim().toUpperCase());
 
-        if(visilbeNameIndex != -1)
-            categories = ( (String)lines.get(visilbeNameIndex) ).trim().substring(11);
+        if(categoriesIndex != -1)
+            this.setCategories(( (String)lines.get(categoriesIndex) ).trim().substring(11));
     }
 
-    /**
-     * put properties data into lines property,
-     * so lines should reflect file's final content
-     */
-    public void refreshLines() throws IOException {
 
-        lines.set(visilbeNameIndex, visibleName);
-        lines.set(commentIndex, comment);
-        lines.set(execIndex, exec);
-        lines.set(iconIndex, icon);
-        lines.set(terminalIndex, terminal);
-        lines.set(typeIndex, type);
-        lines.set(categoriesIndex, categories);
+    /**
+     * Can override an index,
+     * uses the index to localize a line to edit or create a new one
+     * @param index index of the line to override. -1 means ignore, then it will override it.
+     * @param lineToUse what to write
+     * @param lines all the lines
+     * @param desktopProperty e.g. "Name", "Comment", "Type"
+     * @return overridden index, immutable int makes it thread safe.
+     */
+    @NotNull
+    public int addLineSmallFacade( @NotNull String lineToUse, @NotNull List lines, @NotNull int index, @NotNull String desktopProperty){
+        l.debug("add a line: " + lineToUse + " at " + index);
+
+        if(index != -1)
+            lines.set(index, desktopProperty + "=" + lineToUse);
+        else if(!lineToUse.isBlank()){
+            lines.add(desktopProperty + "=" + lineToUse);
+            index = lines.size()-1;
+        }
+        return index;
     }
 
     public void save() throws IOException {
         l.info("save: " + this.getName());
 
-        FileUtils.writeLines(this, getLines());
+
+        l.debug("saving: ");
+        for (Object line_temp : lines) {
+            l.debug((String)line_temp);
+        }
+        //FileUtils.writeLines(this, getLines());
     }
 
 
@@ -112,14 +125,14 @@ public class Desktop extends File {
     private Boolean hidden;
     private Boolean terminal;
 
-    //-1 means doesn't exist
-    int visilbeNameIndex = -1;
-    int commentIndex = -1;
-    int execIndex = -1;
-    int iconIndex = -1;
-    int terminalIndex = -1;
-    int typeIndex = -1;
-    int categoriesIndex = -1;
+    //-1 means doesn't exist, mutable because we want to pass it to functions
+    private int visibleNameIndex = -1;
+    private int commentIndex = -1;
+    private int execIndex = -1;
+    private int iconIndex = -1;
+    private int terminalIndex = -1;
+    private int typeIndex = -1;
+    private int categoriesIndex = -1;
     //endregion
 
 
@@ -131,7 +144,7 @@ public class Desktop extends File {
 
     public void setVisibleName(String name) {
         this.visibleName = name;
-        lines.set(visilbeNameIndex, visibleName);
+        visibleNameIndex= addLineSmallFacade(visibleName, lines, visibleNameIndex, "Name");
     }
 
     public String getComment() {
@@ -140,7 +153,7 @@ public class Desktop extends File {
 
     public void setComment(String comment) {
         this.comment = comment;
-        lines.set(commentIndex, comment);
+        commentIndex= addLineSmallFacade(comment, lines, commentIndex, "Comment");
     }
 
     public String getExec() {
@@ -149,7 +162,7 @@ public class Desktop extends File {
 
     public void setExec(String exec) {
         this.exec = exec;
-        lines.set(execIndex, exec);
+        execIndex= addLineSmallFacade(exec, lines, execIndex, "Exec");
     }
 
     public String getIcon() {
@@ -158,7 +171,7 @@ public class Desktop extends File {
 
     public void setIcon(String icon) {
         this.icon = icon;
-        lines.set(iconIndex, icon);
+        iconIndex= addLineSmallFacade(icon, lines, iconIndex, "Icon");
     }
 
     public String getCategories() {
@@ -167,15 +180,11 @@ public class Desktop extends File {
 
     public void setCategories(String categories) {
         this.categories = categories;
-        lines.set(categoriesIndex, categories);
+        categoriesIndex= addLineSmallFacade(categories, lines, categoriesIndex, "Categories");
     }
 
     public List getLines() {
         return lines;
-    }
-
-    public void setLines(List lines) {
-        this.lines = lines;
     }
 
     public DesktopType getDesktopType() {
@@ -184,7 +193,7 @@ public class Desktop extends File {
 
     public void setDesktopType(DesktopType type) {
         this.type = type;
-        lines.set(typeIndex, type);
+        //typeIndex= addLineSmallFacade(this.type, lines, typeIndex);
     }
 
     public Boolean getHidden() {
@@ -201,7 +210,7 @@ public class Desktop extends File {
 
     public void setTerminal(Boolean terminal) {
         this.terminal = terminal;
-        lines.set(terminalIndex, terminal);
+        //terminalIndex= addLineSmallFacade(this.terminal, lines, terminalIndex);
     }
     //endregion
 }

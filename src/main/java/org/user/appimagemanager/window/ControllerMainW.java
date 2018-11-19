@@ -1,10 +1,13 @@
 package org.user.appimagemanager.window;
 
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -13,6 +16,7 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.user.appimagemanager.Data;
+import org.user.appimagemanager.model.DesktopType;
 import org.user.appimagemanager.model.TemplateChangeListenerContAccess;
 import org.user.appimagemanager.model.Desktop;
 
@@ -46,7 +50,8 @@ public class ControllerMainW {
     private TextField icon;
     @FXML
     private TextField categories;
-
+    @FXML
+    private ChoiceBox choiceBoxDesktopType;
 
     /**
      * function that should run when listview selects new file to load
@@ -85,9 +90,12 @@ public class ControllerMainW {
         //add values to listview
         listView.getItems().addAll(model.filenames);
 
-        //onValueChange.setModel(model);
+        //apply listener
         listView.getSelectionModel().selectedItemProperty().addListener(onListViewValueChange);
 
+        //set up combo box values
+        choiceBoxDesktopType.getItems().setAll(DesktopType.values());
+        choiceBoxDesktopType.getSelectionModel().selectFirst();
 
         //bind view fields' values to model's properties to have true mvc
         model.filename.bindBidirectional(filename.textProperty());
@@ -96,6 +104,7 @@ public class ControllerMainW {
         model.comment.bindBidirectional(comment.textProperty());
         model.icon.bindBidirectional(icon.textProperty());
         model.categories.bindBidirectional(categories.textProperty());
+        model.type.bindBidirectional(choiceBoxDesktopType.valueProperty());
     }
     //endregion
 

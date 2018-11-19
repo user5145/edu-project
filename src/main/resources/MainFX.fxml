@@ -6,6 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
+<?import javafx.beans.property.StringProperty?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             prefHeight="500.0" prefWidth="800.0"
@@ -29,15 +30,7 @@
                     <Label text="Categories:" GridPane.rowIndex="2" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Program's categories (e.g. Game;Education;)" fx:id="categories" />
 
                     <Label text="Type:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                    <ChoiceBox GridPane.rowIndex="3" GridPane.columnIndex="1" value="Application">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Application" />
-                                <String fx:value="Link" />
-                                <String fx:value="Directory" />
-                            </FXCollections>
-                        </items>
-                    </ChoiceBox>
+                    <ChoiceBox GridPane.rowIndex="3" GridPane.columnIndex="1" value="Application" fx:id="choiceBoxDesktopType" />
 
                     <HBox GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox /><Label text="Spawn in Terminal" /></HBox>
                 </GridPane>

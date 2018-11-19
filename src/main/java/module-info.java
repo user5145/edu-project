@@ -6,4 +6,5 @@ module org.user.appimagemanager {
     requires slf4j.log4j12;
     requires org.apache.commons.io;
     requires annotations;
+    requires com.google.common;
 }

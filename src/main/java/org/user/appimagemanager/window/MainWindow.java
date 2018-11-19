@@ -1,5 +1,7 @@
 package org.user.appimagemanager.window;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.user.appimagemanager.Data;
 import org.user.appimagemanager.model.Desktop;
+import org.user.appimagemanager.model.DesktopType;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +39,7 @@ public class MainWindow {
     public StringProperty comment = new SimpleStringProperty();
     public StringProperty icon = new SimpleStringProperty();
     public StringProperty categories = new SimpleStringProperty();
+    public ObjectProperty type = new SimpleObjectProperty();
     //endregion
 
 
@@ -73,6 +77,7 @@ public class MainWindow {
         comment.setValue(file.getComment());
         icon.setValue(file.getIcon());
         categories.setValue(file.getCategories());
+        type.setValue(file.getType());
     }
 
     /**
@@ -111,6 +116,7 @@ public class MainWindow {
         d.setExec(exec.getValueSafe());
         d.setIcon(icon.getValueSafe());
         d.setCategories(categories.getValueSafe());
+        d.setDesktopType((DesktopType) type.get());
 
         try {
             d.save();

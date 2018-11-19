@@ -1,5 +1,6 @@
 package org.user.appimagemanager.model;
 
+import com.google.common.base.Enums;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,11 +71,14 @@ public class Desktop extends File {
         if(terminalIndex != -1)
             this.setTerminal(( (String)lines.get(terminalIndex) ).trim().substring(9).toLowerCase().equals("true"));
 
-        //if(typeIndex != -1)
-            //type = DesktopType.valueOf(( (String)lines.get(visilbeNameIndex) ).trim().substring(5).trim().toUpperCase());
-
         if(categoriesIndex != -1)
             this.setCategories(( (String)lines.get(categoriesIndex) ).trim().substring(11));
+
+        if(typeIndex != -1){
+            var temp= ( (String)lines.get(typeIndex) ).trim().substring(5).trim();
+            if (Enums.getIfPresent(DesktopType.class, temp.toUpperCase()).isPresent())
+                this.setDesktopType(Enums.getIfPresent(DesktopType.class, temp.toUpperCase()).get());
+        }
     }
 
 
@@ -113,6 +117,7 @@ public class Desktop extends File {
 
 
     //region properties
+    private List lines = new ArrayList();
     /**
      * It should override Name property.
      */
@@ -121,35 +126,27 @@ public class Desktop extends File {
     private String exec;
     private String icon;
     private String categories;
-    private List lines = new ArrayList();
     private DesktopType type;
     private Boolean hidden;
     private Boolean terminal;
 
-    //-1 means doesn't exist, mutable because we want to pass it to functions
+    //-1 means doesn't exist
     private int visibleNameIndex = -1;
     private int commentIndex = -1;
     private int execIndex = -1;
     private int iconIndex = -1;
-    private int terminalIndex = -1;
-    private int typeIndex = -1;
     private int categoriesIndex = -1;
+    private int typeIndex = -1;
+    private int terminalIndex = -1;
+    private int hiddenIndex = -1;
     //endregion
 
 
 
     //region getter and setters
-    public String getVisibleName() {
-        return visibleName;
-    }
-
     public void setVisibleName(String name) {
         this.visibleName = name;
         visibleNameIndex= addLineSmallFacade(visibleName, lines, visibleNameIndex, "Name");
-    }
-
-    public String getComment() {
-        return comment;
     }
 
     public void setComment(String comment) {
@@ -157,17 +154,9 @@ public class Desktop extends File {
         commentIndex= addLineSmallFacade(comment, lines, commentIndex, "Comment");
     }
 
-    public String getExec() {
-        return exec;
-    }
-
     public void setExec(String exec) {
         this.exec = exec;
         execIndex= addLineSmallFacade(exec, lines, execIndex, "Exec");
-    }
-
-    public String getIcon() {
-        return icon;
     }
 
     public void setIcon(String icon) {
@@ -175,43 +164,55 @@ public class Desktop extends File {
         iconIndex= addLineSmallFacade(icon, lines, iconIndex, "Icon");
     }
 
-    public String getCategories() {
-        return categories;
-    }
-
     public void setCategories(String categories) {
         this.categories = categories;
         categoriesIndex= addLineSmallFacade(categories, lines, categoriesIndex, "Categories");
     }
 
-    public List getLines() {
-        return lines;
-    }
-
-    public DesktopType getDesktopType() {
-        return type;
-    }
-
     public void setDesktopType(DesktopType type) {
         this.type = type;
-        //typeIndex= addLineSmallFacade(this.type, lines, typeIndex);
-    }
-
-    public Boolean getHidden() {
-        return hidden;
+        typeIndex= addLineSmallFacade(this.type.toString(), lines, typeIndex, "Type");
     }
 
     public void setHidden(Boolean hidden) {
         this.hidden = hidden;
     }
 
-    public Boolean getTerminal() {
-        return terminal;
-    }
-
     public void setTerminal(Boolean terminal) {
         this.terminal = terminal;
         //terminalIndex= addLineSmallFacade(this.terminal, lines, terminalIndex);
+    }
+
+    public String getVisibleName() {
+        return visibleName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public String getExec() {
+        return exec;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public DesktopType getType() {
+        return type;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public Boolean getTerminal() {
+        return terminal;
     }
     //endregion
 }

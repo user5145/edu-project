@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +29,8 @@ public class Desktop extends File {
         super(uri);
 
         try {
-            lines = FileUtils.readLines(this);
+            if (this.exists())
+                lines = FileUtils.readLines(this);
         } catch (IOException e) { e.printStackTrace(); return;}
 
         //searches for appropriate lines and saves their indexes (AKA a bunch of ifs)
@@ -101,10 +103,9 @@ public class Desktop extends File {
     public void save() throws IOException {
         l.info("save: " + this.getName());
 
-
         l.debug("saving: ");
         for (Object line_temp : lines) {
-            l.debug((String)line_temp);
+            l.debug((String) line_temp);
         }
         //FileUtils.writeLines(this, getLines());
     }
@@ -120,7 +121,7 @@ public class Desktop extends File {
     private String exec;
     private String icon;
     private String categories;
-    private List lines;
+    private List lines = new ArrayList();
     private DesktopType type;
     private Boolean hidden;
     private Boolean terminal;

@@ -100,8 +100,8 @@ public class MainWindow {
 
     public void Save() {
         l.debug("exec models save function");
-        if(filename.getValueSafe().isBlank()){
-            l.warn("tried to save a file without name, interrupted");
+        if(filename.getValueSafe().isBlank() || exec.getValueSafe().isBlank() || name.getValueSafe().isBlank()){
+            l.warn("tried to save a file without a name, exec or filename, interrupted");
             return;
         }
 

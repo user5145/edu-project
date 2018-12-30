@@ -123,6 +123,15 @@ public class MainWindow {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
+    public void Remove(File f){
+        if(f == null){
+            l.debug("doesn\'t exist");
+        }
+        else{
+            l.debug("Removing: " + f.getAbsolutePath());
+        }
+    }
+
     /**
      * check if the String end with .desktop and if not add the suffix
      * @param s

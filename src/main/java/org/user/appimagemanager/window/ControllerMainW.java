@@ -131,6 +131,13 @@ public class ControllerMainW {
         model.Save();
     }
 
+    public void onRemove(Event e) {
+        l.info("Remove button clicked");
+
+        l.debug(model.filename.getValue());
+        model.Remove(model.getSpecificFile(model.filename.getValue()));
+    }
+
     public void onDrag(Event e) {
         l.info("File dragged over");
     }

@@ -49,7 +49,7 @@
             </padding>
             <Button text="Load a desktop file" onAction="#onSelect" />
             <Button text="Create from an executable" onAction="#onSelect" />
-            <Button text="Remove" onAction="#onSelect" />
+            <Button text="Remove" onAction="#onRemove" />
             <Button text="Save" onAction="#onSave" />
         </HBox>
     </bottom>

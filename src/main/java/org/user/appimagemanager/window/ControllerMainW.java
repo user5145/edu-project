@@ -6,10 +6,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -51,6 +48,10 @@ public class ControllerMainW {
     private TextField icon;
     @FXML
     private TextField categories;
+    @FXML
+    private CheckBox terminal;
+    @FXML
+    private CheckBox hidden;
     @FXML
     private ChoiceBox choiceBoxDesktopType;
 
@@ -105,6 +106,8 @@ public class ControllerMainW {
         model.comment.bindBidirectional(comment.textProperty());
         model.icon.bindBidirectional(icon.textProperty());
         model.categories.bindBidirectional(categories.textProperty());
+        model.terminal.bindBidirectional(terminal.selectedProperty());
+        model.hidden.bindBidirectional(hidden.selectedProperty());
         model.type.bindBidirectional(choiceBoxDesktopType.valueProperty());
     }
     //endregion

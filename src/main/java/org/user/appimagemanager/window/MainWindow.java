@@ -1,9 +1,6 @@
 package org.user.appimagemanager.window;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.commons.io.FileUtils;
@@ -39,6 +36,8 @@ public class MainWindow {
     public StringProperty comment = new SimpleStringProperty();
     public StringProperty icon = new SimpleStringProperty();
     public StringProperty categories = new SimpleStringProperty();
+    public BooleanProperty terminal = new SimpleBooleanProperty();
+    public BooleanProperty hidden = new SimpleBooleanProperty();
     public ObjectProperty type = new SimpleObjectProperty();
     //endregion
 
@@ -116,6 +115,8 @@ public class MainWindow {
         d.setExec(exec.getValueSafe());
         d.setIcon(icon.getValueSafe());
         d.setCategories(categories.getValueSafe());
+        d.setHidden(hidden.getValue());
+        d.setTerminal(terminal.getValue());
         d.setDesktopType((DesktopType) type.get());
 
         try {

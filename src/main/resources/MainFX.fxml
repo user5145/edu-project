@@ -21,7 +21,7 @@
             <Label text="Filename:" GridPane.rowIndex="0" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Real filename" GridPane.hgrow="ALWAYS" fx:id="filename" />
             <Label text="Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Visible filename" fx:id="name" />
             <Label text="Exec:" GridPane.rowIndex="2" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="path to the file to launch or a command to execute (e.g. /path/to/app)" fx:id="exec" />
-            <HBox GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox /><Label text="Hidden" /></HBox>
+            <HBox GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox fx:id="hidden" /><Label text="Hidden" /></HBox>
 
             <TitledPane text="Optional" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2" >
                 <GridPane alignment="TOP_CENTER" hgap="5" vgap="5">
@@ -32,7 +32,7 @@
                     <Label text="Type:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
                     <ChoiceBox GridPane.rowIndex="3" GridPane.columnIndex="1" value="Application" fx:id="choiceBoxDesktopType" />
 
-                    <HBox GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox /><Label text="Spawn in Terminal" /></HBox>
+                    <HBox GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox fx:id="terminal" /><Label text="Spawn in Terminal" /></HBox>
                 </GridPane>
             </TitledPane>
         </GridPane>

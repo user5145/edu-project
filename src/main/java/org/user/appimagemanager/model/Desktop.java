@@ -47,6 +47,8 @@ public class Desktop extends File {
                 iconIndex= i;
             else if (line.trim().startsWith("Terminal="))
                 terminalIndex= i;
+            else if (line.trim().startsWith("Hidden="))
+                hiddenIndex= i;
             else if (line.trim().startsWith("Type="))
                 typeIndex= i;
             else if (line.trim().startsWith("Categories="))
@@ -54,7 +56,7 @@ public class Desktop extends File {
         }
 
 
-        // search for every field and save it
+        // saves data from lines marked by indexes to their properties to make editing easier
         // index 5 because name= has 5 symbols, "comment=" has 8, etc
         if(visibleNameIndex != -1)
             this.setVisibleName(( (String)lines.get(visibleNameIndex) ).trim().substring(5));
@@ -71,6 +73,9 @@ public class Desktop extends File {
         if(terminalIndex != -1)
             this.setTerminal(( (String)lines.get(terminalIndex) ).trim().substring(9).toLowerCase().equals("true"));
 
+        if(hiddenIndex != -1)
+            this.setTerminal(( (String)lines.get(terminalIndex) ).trim().substring(9).toLowerCase().equals("true"));
+
         if(categoriesIndex != -1)
             this.setCategories(( (String)lines.get(categoriesIndex) ).trim().substring(11));
 
@@ -81,10 +86,9 @@ public class Desktop extends File {
         }
     }
 
-
     /**
      * Can override an index,
-     * uses an index to localize and replace a line or create a new one
+     * uses an index to localize and replace a line in lines or create a new one
      * @param index index of the line to override. -1 creates a new one.
      * @param lineToUse what to write
      * @param lines all the lines
@@ -106,11 +110,10 @@ public class Desktop extends File {
 
     public void save() throws IOException {
         l.info("save: " + this.getName());
-
-        l.debug("saving: ");
         for (Object line_temp : lines) {
             l.debug((String) line_temp);
         }
+
         //FileUtils.writeLines(this, getLines());
     }
 
@@ -130,7 +133,7 @@ public class Desktop extends File {
     private Boolean hidden;
     private Boolean terminal;
 
-    //-1 means doesn't exist
+    //-1 means it doesn't exist
     private int visibleNameIndex = -1;
     private int commentIndex = -1;
     private int execIndex = -1;
@@ -143,7 +146,7 @@ public class Desktop extends File {
 
 
 
-    //region getter and setters
+    //region getters and setters
     public void setVisibleName(String name) {
         this.visibleName = name;
         visibleNameIndex= addLineSmallFacade(visibleName, lines, visibleNameIndex, "Name");
@@ -176,11 +179,12 @@ public class Desktop extends File {
 
     public void setHidden(Boolean hidden) {
         this.hidden = hidden;
+        hiddenIndex = addLineSmallFacade(this.hidden.toString(), lines, hiddenIndex, "Hidden");
     }
 
     public void setTerminal(Boolean terminal) {
         this.terminal = terminal;
-        //terminalIndex= addLineSmallFacade(this.terminal, lines, terminalIndex);
+        terminalIndex= addLineSmallFacade(this.terminal.toString(), lines, terminalIndex, "Terminal");
     }
 
     public String getVisibleName() {

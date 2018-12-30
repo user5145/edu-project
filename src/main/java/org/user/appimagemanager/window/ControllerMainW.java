@@ -20,6 +20,7 @@ import org.user.appimagemanager.model.DesktopType;
 import org.user.appimagemanager.model.TemplateChangeListenerContAccess;
 import org.user.appimagemanager.model.Desktop;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -134,8 +135,11 @@ public class ControllerMainW {
     public void onRemove(Event e) {
         l.info("Remove button clicked");
 
-        l.debug(model.filename.getValue());
-        model.Remove(model.getSpecificFile(model.filename.getValue()));
+        File f = model.getSpecificFile(model.filename.getValue());
+        if(f != null)
+            model.Remove(f);
+        else
+            l.warn("cannot remove the file, it doesn't exists");
     }
 
     public void onDrag(Event e) {

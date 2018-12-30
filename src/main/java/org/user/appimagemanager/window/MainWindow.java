@@ -124,12 +124,7 @@ public class MainWindow {
     }
 
     public void Remove(File f){
-        if(f == null){
-            l.debug("doesn\'t exist");
-        }
-        else{
-            l.debug("Removing: " + f.getAbsolutePath());
-        }
+        l.debug("Removing: " + f.getAbsolutePath());
     }
 
     /**

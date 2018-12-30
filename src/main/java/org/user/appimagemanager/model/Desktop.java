@@ -85,7 +85,7 @@ public class Desktop extends File {
     /**
      * Can override an index,
      * uses the index to localize a line to edit or create a new one
-     * @param index index of the line to override. -1 means ignore, then it will override it.
+     * @param index index of the line to override. -1 creates a new one.
      * @param lineToUse what to write
      * @param lines all the lines
      * @param desktopProperty e.g. "Name", "Comment", "Type"

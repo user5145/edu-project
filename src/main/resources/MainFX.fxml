@@ -18,7 +18,7 @@
             <padding>
                 <Insets top="15" right="15" bottom="15" left="15" />
             </padding>
-            <Label text="Filename:" GridPane.rowIndex="0" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Real filename" GridPane.hgrow="ALWAYS" fx:id="filename" />
+            <Label text="Filename:" GridPane.rowIndex="0" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Real filename" GridPane.hgrow="ALWAYS" fx:id="filename" disable="true" />
             <Label text="Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Visible filename" fx:id="name" />
             <Label text="Exec:" GridPane.rowIndex="2" GridPane.columnIndex="0" /> <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="path to the file to launch or a command to execute (e.g. /path/to/app)" fx:id="exec" />
             <HBox GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="5"> <CheckBox fx:id="hidden" /><Label text="Hidden" /></HBox>
@@ -47,8 +47,8 @@
             <padding>
                 <Insets top="5" right="15" bottom="5" left="15" />
             </padding>
-            <Button text="Load a desktop file" onAction="#onSelect" />
-            <Button text="Create from an executable" onAction="#onSelect" />
+            <Button text="Load from disk" onAction="#onLoad" />
+            <Button text="New file" onAction="#onCreateNew" />
             <Button text="Remove" onAction="#onRemove" />
             <Button text="Save" onAction="#onSave" />
         </HBox>

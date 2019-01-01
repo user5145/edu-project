@@ -1,7 +1,6 @@
 package org.user.appimagemanager.window;
 
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +18,7 @@ import org.user.appimagemanager.model.Desktop;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * main controller of this application controls the main window
@@ -115,8 +115,8 @@ public class ControllerMainW {
 
 
     //region actions
-    public void onSelect(Event e) {
-        l.info("button clicked");
+    public void onLoad(Event e) {
+        l.info("select a file to load");
 
         String uri;
         try {
@@ -145,8 +145,28 @@ public class ControllerMainW {
             l.warn("cannot remove the file, it doesn't exists");
     }
 
-    public void onDrag(Event e) {
-        l.info("File dragged over");
+    public void onCreateNew(Event e) {
+        l.info("create a new file");
+
+
+        Desktop d = new Desktop("");
+        //erase fields data and set up choiceBoxes
+        model.setUpFields(d);
+        choiceBoxDesktopType.getSelectionModel().selectFirst();
+
+        TextInputDialog dialog = new TextInputDialog("file\'s name");
+        dialog.setTitle("Text Input Dialog");
+        dialog.setHeaderText("Create a new desktop file");
+        dialog.setContentText("Please enter file\'s name:");
+
+        // get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+            model.filename.setValue(result.get());
+            l.info("provided file\'s name: " + model.filename.getValueSafe());
+        }
+        else
+            l.info("canceled new file creation");
     }
     //endregion
 

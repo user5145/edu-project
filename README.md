@@ -1,2 +1,2 @@
 # edu-project
-educational project. Application which creates linux shortcuts
+educational project for mvc with javafx. Application which creates linux shortcuts
